@@ -1,4 +1,5 @@
 import React from 'react';
+import { PageHOC } from '../components';
 
 const Home = () => {
   return (
@@ -10,4 +11,8 @@ const Home = () => {
   )
 };
 
-export default Home;
+export default PageHOC(Home,
+  <>Welcome to AvaxGods <br /> A web3 Card Royal Game</>,
+  <>Connect your wallet to start playing <br />
+    The Ultimate Battle Royal Card Game </>
+);
