@@ -14,11 +14,17 @@ const PageHOC = (Component, title, description) => () => {
                 <img src={logo} alt='logo' className={styles.hocLogo} onClick={() => navigate('/')} />
                 <div className={styles.hocBodyWrapper}>
                     <div className='flex flex-row w-full'>
-                        <h1>{title}</h1>
+                        <h1 className={`flex ${styles.headText} head-text`}>{title}</h1>
                     </div>
-                    <p>{description}</p>
+                    <p className={`${styles.normalText} my-10`}>{description}</p>
+                    {/*<p className='font-rajdhani font-normal text-[24px] text-siteWhite my-10'> {description}</p> */}
                     <Component />
                 </div>
+                <p className={styles.footerText}> Made with 💜 by TheBks </p>
+            </div>
+
+            <div className='flex flex-1'>
+                <img src={heroImg} alt='hero-img' className="w-full xl:h-full object-cover" />
             </div>
         </div>
     )
