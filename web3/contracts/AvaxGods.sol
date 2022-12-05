@@ -92,11 +92,9 @@ contract AVAXGods is ERC1155, Ownable, ERC1155Supply {
         }
     }
 
-    function getPlayerToken(address addr)
-        public
-        view
-        returns (GameToken memory)
-    {
+    function getPlayerToken(
+        address addr
+    ) public view returns (GameToken memory) {
         require(isPlayerToken(addr), "Game token doesn't exist!");
         return gameTokens[playerTokenInfo[addr]];
     }
@@ -114,11 +112,9 @@ contract AVAXGods is ERC1155, Ownable, ERC1155Supply {
         }
     }
 
-    function getBattle(string memory _name)
-        public
-        view
-        returns (Battle memory)
-    {
+    function getBattle(
+        string memory _name
+    ) public view returns (Battle memory) {
         require(isBattle(_name), "Battle doesn't exist!");
         return battles[battleInfo[_name]];
     }
@@ -127,9 +123,10 @@ contract AVAXGods is ERC1155, Ownable, ERC1155Supply {
         return battles;
     }
 
-    function updateBattle(string memory _name, Battle memory _newBattle)
-        private
-    {
+    function updateBattle(
+        string memory _name,
+        Battle memory _newBattle
+    ) private {
         require(isBattle(_name), "Battle doesn't exist");
         battles[battleInfo[_name]] = _newBattle;
     }
@@ -183,9 +180,10 @@ contract AVAXGods is ERC1155, Ownable, ERC1155Supply {
 
     /// @dev Registers a player
     /// @param _name player name; set by player
-    function registerPlayer(string memory _name, string memory _gameTokenName)
-        external
-    {
+    function registerPlayer(
+        string memory _name,
+        string memory _gameTokenName
+    ) external {
         require(!isPlayer(msg.sender), "Player already registered"); // Require that player is not already registered
 
         uint256 _id = players.length;
@@ -198,11 +196,10 @@ contract AVAXGods is ERC1155, Ownable, ERC1155Supply {
     }
 
     /// @dev internal function to generate random number; used for Battle Card Attack and Defense Strength
-    function _createRandomNum(uint256 _max, address _sender)
-        internal
-        view
-        returns (uint256 randomValue)
-    {
+    function _createRandomNum(
+        uint256 _max,
+        address _sender
+    ) internal view returns (uint256 randomValue) {
         uint256 randomNum = uint256(
             keccak256(
                 abi.encodePacked(block.difficulty, block.timestamp, _sender)
@@ -218,10 +215,9 @@ contract AVAXGods is ERC1155, Ownable, ERC1155Supply {
     }
 
     /// @dev internal function to create a new Battle Card
-    function _createGameToken(string memory _name)
-        internal
-        returns (GameToken memory)
-    {
+    function _createGameToken(
+        string memory _name
+    ) internal returns (GameToken memory) {
         uint256 randAttackStrength = _createRandomNum(
             MAX_ATTACK_DEFEND_STRENGTH,
             msg.sender
@@ -276,10 +272,9 @@ contract AVAXGods is ERC1155, Ownable, ERC1155Supply {
 
     /// @dev Creates a new battle
     /// @param _name battle name; set by player
-    function createBattle(string memory _name)
-        external
-        returns (Battle memory)
-    {
+    function createBattle(
+        string memory _name
+    ) external returns (Battle memory) {
         require(isPlayer(msg.sender), "Please Register Player First"); // Require that the player is registered
         require(!isBattle(_name), "Battle already exists!"); // Require battle with same name should not exist
 
@@ -328,11 +323,9 @@ contract AVAXGods is ERC1155, Ownable, ERC1155Supply {
     }
 
     // Read battle move info for player 1 and player 2
-    function getBattleMoves(string memory _battleName)
-        public
-        view
-        returns (uint256 P1Move, uint256 P2Move)
-    {
+    function getBattleMoves(
+        string memory _battleName
+    ) public view returns (uint256 P1Move, uint256 P2Move) {
         Battle memory _battle = getBattle(_battleName);
 
         P1Move = _battle.moves[0];
@@ -358,9 +351,10 @@ contract AVAXGods is ERC1155, Ownable, ERC1155Supply {
     }
 
     // User chooses attack or defense move for battle card
-    function attackOrDefendChoice(uint8 _choice, string memory _battleName)
-        external
-    {
+    function attackOrDefendChoice(
+        uint8 _choice,
+        string memory _battleName
+    ) external {
         Battle memory _battle = getBattle(_battleName);
 
         require(
@@ -553,10 +547,10 @@ contract AVAXGods is ERC1155, Ownable, ERC1155Supply {
     /// @dev internal function to end the battle
     /// @param battleEnder winner address
     /// @param _battle battle; taken from attackOrDefend function
-    function _endBattle(address battleEnder, Battle memory _battle)
-        internal
-        returns (Battle memory)
-    {
+    function _endBattle(
+        address battleEnder,
+        Battle memory _battle
+    ) internal returns (Battle memory) {
         require(
             _battle.battleStatus != BattleStatus.ENDED,
             "Battle already ended"
@@ -587,11 +581,9 @@ contract AVAXGods is ERC1155, Ownable, ERC1155Supply {
     }
 
     // Turns uint256 into string
-    function uintToStr(uint256 _i)
-        internal
-        pure
-        returns (string memory _uintAsString)
-    {
+    function uintToStr(
+        uint256 _i
+    ) internal pure returns (string memory _uintAsString) {
         if (_i == 0) {
             return "0";
         }
