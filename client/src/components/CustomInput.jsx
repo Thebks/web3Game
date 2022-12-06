@@ -13,7 +13,7 @@ const CustomInput = ({ label, placeHolder, value, handleValueChange }) => {
                 placeholder={placeHolder}
                 value={value}
                 onChange={(e) => {
-                    if (e.target.value === '' && regex.test(e.target.value)) handleValueChange(e.target.value);
+                    if (e.target.value === '' || regex.test(e.target.value)) handleValueChange(e.target.value);
                 }}
                 className={styles.input}
             />

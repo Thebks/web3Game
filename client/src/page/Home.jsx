@@ -5,10 +5,11 @@ import { useGlobalContext } from '../context';
 const Home = () => {
 
   const { contract, walletAddress, setShowAlert } = useGlobalContext();
-  const { playerName, setPlayerName } = useState('');
+  const [playerName, setPlayerName] = useState('');
 
   const handleClick = async () => {
     try {
+      console.log({ contract })
       const playerExists = await contract.isPlayer(walletAddress);
       if (!playerExists) {
         await contract.registerPlayer(playerName)
@@ -29,12 +30,12 @@ const Home = () => {
         label='Name'
         placeHolder='Enter your Name'
         value={playerName}
-        handleValueChange={handleClick}
+        handleValueChange={setPlayerName}   //this is where the ENS problem could be as we didnt call the setvalue usestate
       />
 
       <CustomButton
         title='Register'
-        handleClick={() => { }}
+        handleClick={handleClick}
         restStyles='mt-6'
       />
     </div>

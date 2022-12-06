@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { ethers } from 'ethers';
-import { web3Modal } from 'web3modal';
+import Web3Modal from 'web3modal';
 import { useNavigate } from "react-router-dom";
 import { ABI, ADDRESS } from '../contract';
 
@@ -19,11 +19,16 @@ export const GlobalContextProvider = ({ children }) => {
     // Set the current Wallet address to the state
 
     const updateCurrentWalletAddress = async () => {
-        const account = await window.ethereum.request({
-            method: 'eth_requestAccounts'
-        });
-
-        if (account) setWalletAddress(account[0]);
+        //  const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        if (window.ethereum) {
+            try {
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                console.log(accounts);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        if (accounts) setWalletAddress(accounts[0]);
     }
 
 
@@ -38,7 +43,7 @@ export const GlobalContextProvider = ({ children }) => {
 
     useEffect(() => {
         const setSmartContractAndProvider = async () => {
-            const web3Modal = new web3Modal();
+            const web3Modal = new Web3Modal();
             const connection = await web3Modal.connect();
             const newProvider = new ethers.providers.Web3Provider(connection);
             const signer = newProvider.getSigner();
@@ -47,7 +52,7 @@ export const GlobalContextProvider = ({ children }) => {
             setProvider(newProvider);
             setContract(newContract);
 
-        }
+        };
         setSmartContractAndProvider();
     }, []);
 
