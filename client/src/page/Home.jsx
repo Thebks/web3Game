@@ -21,10 +21,11 @@ const Home = () => {
         })
       }
     } catch (error) {
+      console.log(error, error.message)
       setShowAlert({
         status: true,
-        type: "error",
-        message: error.message
+        type: "failure",
+        message: error.message  // I can see the error message but in the video jsm got an error(tested on Brave)
       })
     }
   }
@@ -35,7 +36,7 @@ const Home = () => {
         label='Name'
         placeHolder='Enter your Name'
         value={playerName}
-        handleValueChange={setPlayerName}   //this is where the ENS problem could be as we didnt call the setvalue usestate
+        handleValueChange={setPlayerName}   //this is where the ENS problem was coming from as we didnt call the useState
       />
 
       <CustomButton
