@@ -17,6 +17,8 @@ export const GlobalContextProvider = ({ children }) => {
         type: 'info',
         message: ''
     });
+
+    const navigate = useNavigate();
     // Set the current Wallet address to the state
 
     const updateCurrentWalletAddress = async () => {
@@ -53,10 +55,10 @@ export const GlobalContextProvider = ({ children }) => {
         if (contract) {
             createEventListeners({
                 navigate, walletAddress, contract,
-                setShowAlert, provider
+                setShowAlert, provider,
             })
         }
-    }, [])
+    }, [contract]);
 
     useEffect(() => {
         if (showAlert?.status) {
@@ -66,7 +68,7 @@ export const GlobalContextProvider = ({ children }) => {
 
             return () => clearTimeout(timer);
         }
-    }, [showAlert]);
+    }, [showAlert]); // watch this line
 
 
     return (

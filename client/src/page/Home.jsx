@@ -9,7 +9,7 @@ const Home = () => {
 
   const handleClick = async () => {
     try {
-      console.log({ contract })
+      //console.log({ contract })
       const playerExists = await contract.isPlayer(walletAddress);
       if (!playerExists) {
         await contract.registerPlayer(playerName, playerName) // this is where I was making a mistake as I was sending one less argumentez
