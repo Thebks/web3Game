@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import { ABI } from '../contract';
-import { Contract } from 'ethers';
+
 
 const AddNewEvent = (eventFilter, provider, callback) => {
     provider.removeListener(eventFilter);
@@ -22,7 +22,7 @@ export const createEventListeners = ({ navigate, contract, provider, walletAddre
             setShowAlert({
                 status: true,
                 type: 'success',
-                message: "player is being success created"
+                message: "player is being successfully created"
             });
         }
     });
