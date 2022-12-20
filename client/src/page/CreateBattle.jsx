@@ -5,14 +5,26 @@ import styles from '../styles';
 import { useGlobalContext } from '../context';
 import { PageHOC, CustomButton, CustomInput } from '../components';
 
-const handleClick = () => {
 
-};
 
 
 const CreateBattle = () => {
     const { contract, battleName, setBattleName } = useGlobalContext();
+    const [waitBattle, setWaitBattle] = useState(false);
     const navigate = useNavigate();
+
+
+    const handleClick = async () => {
+        if (!battleName || !battleName.trim()) return null;
+        try {
+            await contract.createBattle(battleName);
+            setWaitBattle(true); // The setWaitbattle component (gameLoad) is yet to be created 
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
     return (
         <>
             <div className="flex flex-col mb-5">
@@ -29,6 +41,7 @@ const CreateBattle = () => {
                     restStyles="mt-6"
                 />
             </div>
+            <p className={styles.infoText} onClick={() => navigate('/join-battle')}>Join Current Ongoing Battle</p>
         </>
     )
 };
