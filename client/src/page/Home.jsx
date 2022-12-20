@@ -46,7 +46,7 @@ const Home = () => {
 
     };
 
-    (contract) ? checkForPlayerToken() : console.log({ contract }); // Added else just for testing 
+    (contract) ? checkForPlayerToken() : console.log({ contract }); // Added else statement just for testing 
   }, [contract]);
 
   return (
