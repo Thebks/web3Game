@@ -72,6 +72,11 @@ export const GlobalContextProvider = ({ children }) => {
     }, [showAlert]); // watch this line
 
 
+    //Set game data to the state (Will work on this tomorrow)
+    useEffect(() => {
+
+    }, [contract]);
+
     return (
         <GlobalContext.Provider value={{
             contract, walletAddress, showAlert, setShowAlert, battleName, setBattleName

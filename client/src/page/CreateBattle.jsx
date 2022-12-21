@@ -10,7 +10,7 @@ import { PageHOC, CustomButton, CustomInput, GameLoad } from '../components';
 
 const CreateBattle = () => {
     const { contract, battleName, setBattleName } = useGlobalContext();
-    const [waitBattle, setWaitBattle] = useState(true);
+    const [waitBattle, setWaitBattle] = useState(false);
     const navigate = useNavigate();
 
 
@@ -18,7 +18,7 @@ const CreateBattle = () => {
         if (!battleName || !battleName.trim()) return null;
         try {
             await contract.createBattle(battleName);
-            setWaitBattle(true); // The setWaitbattle component (gameLoad) is yet to be created 
+            setWaitBattle(true); //shoulc prock the load screen
         } catch (error) {
             console.log(error);
         }
