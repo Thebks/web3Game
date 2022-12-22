@@ -18,7 +18,9 @@ export const GlobalContextProvider = ({ children }) => {
         message: ''
     });
     const [battleName, setBattleName] = useState('');
-
+    const [gameData, setGameData] = useState({
+        players: [], pendingBattles: [], activaBattle: null
+    });
     const navigate = useNavigate();
     // Set the current Wallet address to the state
 
@@ -74,12 +76,29 @@ export const GlobalContextProvider = ({ children }) => {
 
     //Set game data to the state (Will work on this tomorrow)
     useEffect(() => {
+        const fetchGameData = async () => {
+            const fetchedBattles = await contract.getAllBattles();
+            console.log(fetchedBattles);
+            const pendingBattles = fetchedBattles.filter(battle => battle.battleStatus === 0);
 
+            let activaBattle = null;
+
+            fetchedBattles.forEach(battle => {
+                if (battle.players.find(player => player.toLowerCase() === walletAddress.toLowerCase())) {
+                    if (battle.winner.startsWith("0x00")) {
+                        activaBattle = battle;
+                    }
+                }
+            })
+            // updating game data
+            setGameData({ pendingBattles: pendingBattles.slice(1), activaBattle })
+        }
+        if (contract) fetchGameData();
     }, [contract]);
 
     return (
         <GlobalContext.Provider value={{
-            contract, walletAddress, showAlert, setShowAlert, battleName, setBattleName
+            contract, walletAddress, showAlert, setShowAlert, battleName, setBattleName, gameData, setGameData
         }}
         >
             {children}
