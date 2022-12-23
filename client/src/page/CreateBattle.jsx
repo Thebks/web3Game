@@ -15,7 +15,7 @@ const CreateBattle = () => {
 
     useEffect(() => {
         if (gameData?.activeBattle?.battleStatus === 0) {
-            setWaitBattle(true);
+            setWaitBattle(true); // by load screen isnt showing(will check it)
         }
     }, [gameData])
 

@@ -78,20 +78,20 @@ export const GlobalContextProvider = ({ children }) => {
     useEffect(() => {
         const fetchGameData = async () => {
             const fetchedBattles = await contract.getAllBattles();
-            console.log(fetchedBattles);
+            // console.log(fetchedBattles);
             const pendingBattles = fetchedBattles.filter(battle => battle.battleStatus === 0);
 
-            let activaBattle = null;
+            let activeBattle = null;
 
-            fetchedBattles.forEach(battle => {
+            fetchedBattles.forEach((battle) => {
                 if (battle.players.find(player => player.toLowerCase() === walletAddress.toLowerCase())) {
-                    if (battle.winner.startsWith("0x00")) {
-                        activaBattle = battle;
+                    if (battle.winner.startsWith('0x00')) {
+                        activeBattle = battle;
                     }
                 }
-            })
+            });
             // updating game data
-            setGameData({ pendingBattles: pendingBattles.slice(1), activaBattle })
+            setGameData({ pendingBattles: pendingBattles.slice(1), activeBattle })
         }
         if (contract) fetchGameData();
     }, [contract]);
