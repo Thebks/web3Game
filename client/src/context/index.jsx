@@ -21,6 +21,9 @@ export const GlobalContextProvider = ({ children }) => {
     const [gameData, setGameData] = useState({
         players: [], pendingBattles: [], activaBattle: null
     });
+    const [updateGameData, setUpdateGameData] = useState(0);
+
+
     const navigate = useNavigate();
     // Set the current Wallet address to the state
 
@@ -58,7 +61,7 @@ export const GlobalContextProvider = ({ children }) => {
         if (contract) {
             createEventListeners({
                 navigate, walletAddress, contract,
-                setShowAlert, provider,
+                setShowAlert, provider, setUpdateGameData
             })
         }
     }, [contract]);
@@ -94,7 +97,7 @@ export const GlobalContextProvider = ({ children }) => {
             setGameData({ pendingBattles: pendingBattles.slice(1), activeBattle })
         }
         if (contract) fetchGameData();
-    }, [contract]);
+    }, [contract, updateGameData]);
 
     return (
         <GlobalContext.Provider value={{

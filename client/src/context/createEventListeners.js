@@ -12,7 +12,7 @@ const AddNewEvent = (eventFilter, provider, callback) => {
     });
 };
 
-export const createEventListeners = ({ navigate, contract, provider, walletAddress, setShowAlert }) => {
+export const createEventListeners = ({ navigate, contract, provider, walletAddress, setShowAlert, setUpdateGameData }) => {
     const NewPlayerEventFilter = contract.filters.NewPlayer();
 
     AddNewEvent(NewPlayerEventFilter, provider, ({ args }) => {
@@ -25,5 +25,16 @@ export const createEventListeners = ({ navigate, contract, provider, walletAddre
                 message: "player is being successfully created"
             });
         }
+    });
+
+    const newBattleEvent = contract.filters.NewBattle();
+
+    AddNewEvent(newBattleEvent, provider, ({ args }) => {
+        console.log("new battle started", args, walletAddress);
+        if (walletAddress.toLowerCase() === args.player1.toLowerCase() || walletAddress.toLowerCase() === args.player2.toLowerCase()) {
+            navigate(`/battle/${args.battleName}`)
+        }
+
+        setUpdateGameData((previousUpdateGameData) => previousUpdateGameData + 1);
     });
 }

@@ -9,9 +9,19 @@ const JoinBattle = () => {
 
     const { contract, gameData, setBattleName, setShowAlert, walletAddress } = useGlobalContext();
     const navigate = useNavigate();
-    const handleClick = () => {
 
+    const handleClick = async (battleName) => {
+        setBattleName(battleName)
+
+        try {
+            await contract.JoinBattle(battleName)
+            setShowAlert({ status: true, type: 'success', message: `joining ${battleName}` })
+
+        } catch (error) {
+            console.log(error);
+        }
     }
+
 
     //console.log("im here")
     return (
@@ -24,6 +34,10 @@ const JoinBattle = () => {
                         .map((battle, index) => (
                             <div className={styles.flexBetween} key={battle.name + index}>
                                 <p className={styles.joinBattleTitle}>{index + 1}: {battle.name}</p>
+                                <CustomButton
+                                    title="Join"
+                                    handleClick={() => handleClick(battle.name)}
+                                />
                             </div>
                         ))
                     : <p className={styles.joinLoading}> Reload to see new battles</p>
