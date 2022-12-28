@@ -7,12 +7,12 @@ import styles from '../styles'
 
 const JoinBattle = () => {
 
-    const { contract, gameData, setBattleName, setShowAlert, walletAddress } = useGlobalContext();
+    const { contract, gameData, setBattleName, setShowAlert, walletAddress, battleName } = useGlobalContext();
     const navigate = useNavigate();
 
     const handleClick = async (battleName) => {
         setBattleName(battleName)
-
+        // console.log("hello here")
         try {
             await contract.JoinBattle(battleName)
             setShowAlert({ status: true, type: 'success', message: `joining ${battleName}` })

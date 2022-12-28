@@ -77,7 +77,7 @@ export const GlobalContextProvider = ({ children }) => {
     }, [showAlert]); // watch this line
 
 
-    //Set game data to the state (Will work on this tomorrow)
+    //Set game data to the state 
     useEffect(() => {
         const fetchGameData = async () => {
             const fetchedBattles = await contract.getAllBattles();
