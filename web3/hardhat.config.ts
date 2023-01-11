@@ -1,5 +1,7 @@
 import dotenv from 'dotenv';
 import '@nomiclabs/hardhat-ethers';
+require("hardhat-tracer");
+require("@nomiclabs/hardhat-waffle")
 
 dotenv.config();
 
@@ -27,6 +29,7 @@ export default {
       url: 'https://api.avax-test.network/ext/bc/C/rpc',
       gasPrice: 225000000000,
       chainId: 43113,
+      blockGasLimit: 60000000,
       accounts: [process.env.PRIVATE_KEY],
     },
     // subnet: {
