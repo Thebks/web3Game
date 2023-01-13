@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import styles from '../styles';
-import { Alert } from '../components';
+import { PlayerInfo, Card, GameInfo, ActionButton, Alert } from '../components';
 import { useGlobalContext } from '../context';
 import { attack, attackSound, defense, defenseSound, player01 as player01Icon, player02 as player02Icon } from '../assets';
 import { playAudio } from '../utils/animation.js';
@@ -18,8 +18,8 @@ const Battle = () => {
     useEffect(() => {
         const getPlayerInfo = async () => {
             try {
-                player01Address = null;
-                player02Address = null;
+                let player01Address = null;
+                let player02Address = null;
 
                 if (gameData.activeBattle.players[0].toLowerCase() === walletAddress.toLowerCase()) {
                     player01Address = gameData.activeBattle.players[0];
@@ -35,7 +35,7 @@ const Battle = () => {
                 const player02 = await contract.getPlayer(player02Address);
 
                 const p1Att = p1TokenData.attackStrength.toNumber();
-                const p1Def = p1TokenData.defenceStrength.toNumber();
+                const p1Def = p1TokenData.defenseStrength.toNumber();
                 const p1H = player01.playerHealth.toNumber();
                 const p1M = player01.playerMana.toNumber();
                 const p2H = player02.playerHealth.toNumber();
@@ -55,7 +55,38 @@ const Battle = () => {
     return (
         <div className={`${styles.flexBetween} ${styles.gameContainer} ${battleGround}`}>
             {showAlert?.status && <Alert type={showAlert.type} message={showAlert.message} />}
-            <h1 className="text.xl">{battleName}</h1>
+
+            <PlayerInfo player={player2} playerIcon={player02Icon} mt />
+            <div className={`${styles.flexCenter} flex-col my-10`}>
+                <Card
+                    card={player2}
+                    title={player2?.playerName}
+                    cardRef=''
+                    playerTwo
+                />
+                <div className="flex flex-center flex-row">
+                    <ActionButton
+                        imgUrl={attack}
+                        handleClick={() => { }}
+                        restStyles="mr-2 hover:border-yellow-400"
+                    />
+                    <Card
+                        card={player1}
+                        title={player1?.playerName}
+                        cardRef=''
+                        restStyles="mt-3"
+                    />
+                    <ActionButton
+                        imgUrl={defense}
+                        handleClick={() => { }}
+                        restStyles="ml-6 hover:border-red-600"
+                    />
+                </div>
+            </div>
+            <PlayerInfo player={player1} playerIcon={player01Icon} mt />
+
+            <GameInfo />
+            {/*<h1 className="text.xl">{battleName}</h1>*/}
         </div>
     )
 }
