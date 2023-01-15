@@ -21,11 +21,13 @@ const PlayerInfo = ({ playerIcon, mt, player }) => {
             <div data-for={`Health-${mt ? '1' : '2'}`} data-tip={`Health: ${player?.Health}`} className={styles.playerHealth}>
 
                 {[...Array(player.health).keys()].map((item, index) => (
-                    <div key={`player-item-${item}`} className={`${styles.playerHealthBar} ${healthLevel(player.health)} ${marginIndexing(index)}`}>
+                    <div key={`player-item-${item}`} className={`${styles.playerHealthBar} ${healthLevel(player.health)} ${marginIndexing(index)}`}
+                    />
 
-                    </div>
                 ))}
-
+            </div>
+            <div data-for={`Mana=${mt ? '1' : '2'}`} data-tip='Mana' className={`${styles.flexCenter} ${styles.glassEffect} ${styles.playerMana}`}>
+                {player.mana || 0}
             </div>
         </div>
     )
