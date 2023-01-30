@@ -7,6 +7,7 @@ import GameInfo from "./GameInfo";
 import Card from "./Card";
 import PlayerInfo from "./PlayerInfo";
 import ActionButton from "./ActionButton";
+import OnboardModal from "./OnboardModal"
 
 
 export {
@@ -19,4 +20,5 @@ export {
     GameInfo,
     Card,
     PlayerInfo,
+    OnboardModal,
 }

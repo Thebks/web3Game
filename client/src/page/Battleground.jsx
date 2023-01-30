@@ -8,11 +8,19 @@ import { useGlobalContext } from '../context';
 
 
 const Battleground = () => {
-    const { setBattleground, setShowAlert, showAlert } = useGlobalContext();
+    const { setBattleGround, setShowAlert, showAlert } = useGlobalContext();
     const navigate = useNavigate();
 
     const handleBattleGroundChoice = (ground) => {
+        setBattleGround(ground.id)
 
+        localStorage.setItem('battleground', ground.id)
+
+        setShowAlert({ status: true, type: 'info', message: `${ground.name} is ready for battle!` });
+
+        setTimeout(() => {
+            navigate(-1)
+        }, 1000)
     }
 
     return (

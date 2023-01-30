@@ -2,8 +2,10 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 import { ethers } from 'ethers';
 import Web3Modal from 'web3modal';
 import { useNavigate } from "react-router-dom";
+
 import { ABI, ADDRESS } from '../contract';
 import { createEventListeners } from './createEventListeners';
+import { GetParams } from '../utils/onboard';
 
 const GlobalContext = createContext();
 
@@ -24,8 +26,37 @@ export const GlobalContextProvider = ({ children }) => {
     const [updateGameData, setUpdateGameData] = useState(0);
     const [battleGround, setBattleGround] = useState('bg-astral');
 
+    const [step, setStep] = useState(1)
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const battleFromLocalStorage = localStorage.getItem('battleground')
+
+        // (battleFromLocalStorage) ? setBattleGround(battleFromLocalStorage) : localStorage.setItem('battleground', battleGround)
+        if (battleFromLocalStorage) {
+            setBattleGround(battleFromLocalStorage)
+        } else {
+            localStorage.setItem('battleground', battleGround)
+        }
+
+
+    }, [])
+
+    // reset web3 onboarding modal params
+
+    useEffect(() => {
+        const resetParams = async () => {
+            const currentStep = await GetParams();
+
+            setStep(currentStep.step);
+        };
+        resetParams();
+        window?.ethereum?.on('chainChanged', () => resetParams());
+        window?.ethereum?.on('accountsChanged', () => resetParams());
+    }, [])
+
+
     // Set the current Wallet address to the state
 
     const updateCurrentWalletAddress = async () => {
@@ -60,13 +91,13 @@ export const GlobalContextProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        if (contract) {
+        if (step === -1 && contract) {
             createEventListeners({
                 navigate, walletAddress, contract,
                 setShowAlert, provider, setUpdateGameData
             })
         }
-    }, [contract]);
+    }, [contract, step]);  // Watch out this line carefully
 
     useEffect(() => {
         if (showAlert?.status) {
