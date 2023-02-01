@@ -37,4 +37,12 @@ export const createEventListeners = ({ navigate, contract, provider, walletAddre
 
         setUpdateGameData((previousUpdateGameData) => previousUpdateGameData + 1);
     });
+
+    const BattleMoveEventFilter = contract.filters.BattleMove();
+
+    AddNewEvent(BattleMoveEventFilter, provider, ({ args }) => {
+        console.log('Battle has begun', args);
+    });
+
+
 }
