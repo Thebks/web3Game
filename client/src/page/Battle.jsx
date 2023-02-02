@@ -9,7 +9,7 @@ import { playAudio } from '../utils/animation.js';
 
 
 const Battle = () => {
-    const { contract, gameData, walletAddress, showAlert, setShowAlert, battleGround } = useGlobalContext();
+    const { contract, gameData, walletAddress, showAlert, setShowAlert, battleGround, setErrorMessage } = useGlobalContext();
     const [player1, setPlayer1] = useState({});
     const [player2, setPlayer2] = useState({}); // navigates to the name of the battle (battle/nameofthebattle)
     const { battleName } = useParams();
@@ -50,11 +50,13 @@ const Battle = () => {
 
 
             } catch (error) {
-                console.log(error);
+                setErrorMessage(error);
             }
         }
         if (contract && gameData.activeBattle) getPlayerInfo();
     }, [contract, gameData, battleName])
+
+    //Making a move function
 
     const makeAMove = async (choice) => {
         playAudio(choice === 1 ? attackSound : defenseSound)
@@ -67,7 +69,7 @@ const Battle = () => {
                 message: `starting ${choice === 1 ? 'attack' : 'defense'}`
             })
         } catch (error) {
-            console.log(error)
+            setErrorMessage(error)
         }
     }
 
