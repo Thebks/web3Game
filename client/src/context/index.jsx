@@ -29,6 +29,10 @@ export const GlobalContextProvider = ({ children }) => {
     const [step, setStep] = useState(1)
     const [errorMessage, setErrorMessage] = useState('');
 
+    const player1Ref = useRef();
+    const player2Ref = useRef();
+
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -95,7 +99,7 @@ export const GlobalContextProvider = ({ children }) => {
         if (step === -1 && contract) {
             createEventListeners({
                 navigate, walletAddress, contract,
-                setShowAlert, provider, setUpdateGameData
+                setShowAlert, provider, setUpdateGameData, player1Ref, player2Ref
             })
         }
     }, [contract, step]);  // Watch out this line carefully
@@ -151,7 +155,7 @@ export const GlobalContextProvider = ({ children }) => {
     return (
         <GlobalContext.Provider value={{
             contract, walletAddress, showAlert, setShowAlert, battleName, setBattleName, gameData, setGameData, battleGround, setBattleGround,
-            errorMessage, setErrorMessage
+            errorMessage, setErrorMessage, player1Ref, player2Ref
         }}
         >
             {children}

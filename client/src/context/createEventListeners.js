@@ -1,5 +1,8 @@
 import { ethers } from 'ethers';
 import { ABI } from '../contract';
+import { playAudio, sparcle } from '../utils/animation.js';
+
+import { defenseSound } from '../assets';
 
 
 const AddNewEvent = (eventFilter, provider, callback) => {
@@ -12,7 +15,16 @@ const AddNewEvent = (eventFilter, provider, callback) => {
     });
 };
 
-export const createEventListeners = ({ navigate, contract, provider, walletAddress, setShowAlert, setUpdateGameData }) => {
+const getcoordinates = (cardRef) => {
+    const { left, top, width, height } = cardRef.current.getBoundingClientRect();
+
+    return {
+        pageX: left + width / 2,
+        pageY: top + height / 2.25,
+    }
+}
+
+export const createEventListeners = ({ navigate, contract, provider, walletAddress, setShowAlert, setUpdateGameData, player1Ref, player2Ref }) => {
     const NewPlayerEventFilter = contract.filters.NewPlayer();
 
     AddNewEvent(NewPlayerEventFilter, provider, ({ args }) => {
@@ -45,4 +57,22 @@ export const createEventListeners = ({ navigate, contract, provider, walletAddre
     });
 
 
+    const RoundEndedEventFilter = contract.filter.RoundEnded();
+
+    AddNewEvent(RoundEndedEventFilter, provider, ({ args }) => {
+        console.log('Round End!', args, walletAddress);
+
+        for (let i = 0; i < args.damagedPlayers.length; i++) {
+            if (args.damagedPlayers[i] === walletAddress) {
+                sparcle(getcoordinates(player1Ref));
+            } else if (args.damagedPlayers[i] !== walletAddress) {
+                sparcle(getcoordinates(player2Ref));
+            } else {
+                playAudio(defenseSound);
+            }
+        }
+    });
+
 }
+
+//  Im right here will commence from here ok
