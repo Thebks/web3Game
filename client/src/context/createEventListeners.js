@@ -16,6 +16,7 @@ const AddNewEvent = (eventFilter, provider, callback) => {
 };
 
 const getcoordinates = (cardRef) => {
+
     const { left, top, width, height } = cardRef.current.getBoundingClientRect();
 
     return {
@@ -57,7 +58,7 @@ export const createEventListeners = ({ navigate, contract, provider, walletAddre
     });
 
 
-    const RoundEndedEventFilter = contract.filter.RoundEnded();
+    const RoundEndedEventFilter = contract.filters.RoundEnded();
 
     AddNewEvent(RoundEndedEventFilter, provider, ({ args }) => {
         console.log('Round End!', args, walletAddress);
@@ -71,8 +72,10 @@ export const createEventListeners = ({ navigate, contract, provider, walletAddre
                 playAudio(defenseSound);
             }
         }
+        setUpdateGameData((previousUpdateGameData) => previousUpdateGameData + 1);
     });
 
 }
 
 //  Im right here will commence from here ok
+
