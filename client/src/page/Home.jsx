@@ -22,7 +22,8 @@ const Home = () => {
           status: true,
           type: 'info',
           message: `${playerName} is being registered`
-        })
+        });
+
       }
       else console.log("player exists");
     } catch (error) {
@@ -48,6 +49,12 @@ const Home = () => {
 
     (contract) ? checkForPlayerToken() : console.log({ contract }); // Added else statement just for testing 
   }, [contract]);
+
+  // useEffect(() => {
+  // if (gameData.activeBattle) {
+  // navigate(`/battle/${gameData.activeBattle.name}`);
+  // }
+  // }, [gameData])
 
   return (
     <div className='flex flex-col'>

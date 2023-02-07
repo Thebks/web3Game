@@ -75,6 +75,20 @@ export const createEventListeners = ({ navigate, contract, provider, walletAddre
         setUpdateGameData((previousUpdateGameData) => previousUpdateGameData + 1);
     });
 
+    const battleEndedEventFilter = contract.filters.BattleEnded();
+
+    AddNewEvent(battleEndedEventFilter, provider, ({ args }) => {
+        console.log('Battle Ended', args, walletAddress)
+
+        if (walletAddress.toLowerCase() === args.winner.toLowerCase()) {
+            setShowAlert({ status: true, type: success, message: 'You Win' })
+        } else if (walletAddress.toLowerCase() === args.loser.toLowerCase) {
+            setShowAlert({ status: true, type: 'failure', message: 'You Lost' })
+        }
+
+        navigate('/create-battle')
+    });
+
 }
 
 //  Im right here will commence from here ok
