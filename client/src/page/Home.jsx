@@ -5,8 +5,9 @@ import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
 
-  const { contract, walletAddress, setShowAlert } = useGlobalContext();
+  const { contract, walletAddress, setShowAlert, gameData, setErrorMessage } = useGlobalContext();
   const [playerName, setPlayerName] = useState('');
+
   const navigate = useNavigate();
 
 
@@ -27,12 +28,7 @@ const Home = () => {
       }
       else console.log("player exists");
     } catch (error) {
-      console.log(error, error.message)
-      setShowAlert({
-        status: true,
-        type: "failure",
-        message: error.message  // I can see the error message but in the video jsm got an error(tested on Brave)
-      })
+      setErrorMessage(error)
     }
   }
 
@@ -50,11 +46,11 @@ const Home = () => {
     (contract) ? checkForPlayerToken() : console.log({ contract }); // Added else statement just for testing 
   }, [contract]);
 
-  // useEffect(() => {
-  // if (gameData.activeBattle) {
-  // navigate(`/battle/${gameData.activeBattle.name}`);
-  // }
-  // }, [gameData])
+  useEffect(() => {
+    if (gameData.activeBattle) {
+      navigate(`/battle/${gameData.activeBattle.name}`);
+    }
+  }, [gameData])
 
   return (
     <div className='flex flex-col'>
@@ -75,7 +71,7 @@ const Home = () => {
 };
 
 export default PageHOC(Home,
-  <>Welcome to AvaxGods <br /> A web3 Card Royal Game</>,
+  <> Welcome to AvaxGods < br /> A web3 Card Royal Game</>,
   <>Connect your wallet to start playing <br />
     The Ultimate Battle Royal Card Game </>
 );

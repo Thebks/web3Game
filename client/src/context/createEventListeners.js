@@ -3,7 +3,8 @@ import { ABI } from '../contract';
 import { playAudio, sparcle } from '../utils/animation.js';
 
 import { defenseSound } from '../assets';
-
+import React from 'react' //testing line
+// import { Home as MyHome } from '../page/Home'; // Testing line
 
 const AddNewEvent = (eventFilter, provider, callback) => {
     provider.removeListener(eventFilter);
@@ -26,8 +27,8 @@ const getcoordinates = (cardRef) => {
 }
 
 export const createEventListeners = ({ navigate, contract, provider, walletAddress, setShowAlert, setUpdateGameData, player1Ref, player2Ref }) => {
-    const NewPlayerEventFilter = contract.filters.NewPlayer();
 
+    const NewPlayerEventFilter = contract.filters.NewPlayer();
     AddNewEvent(NewPlayerEventFilter, provider, ({ args }) => {
         console.log("New Player Created!", args);
 
@@ -40,8 +41,20 @@ export const createEventListeners = ({ navigate, contract, provider, walletAddre
         }
     });
 
-    const newBattleEvent = contract.filters.NewBattle();
+    const newGameTokenEventFilter = contract.filters.NewGameToken();
+    AddNewEvent(newGameTokenEventFilter, provider, ({ args }) => {
+        console.log('New game Token Created', args);
 
+        if (walletAddress.toLowerCase() === args.owner.toLowerCase()) {
+            setShowAlert({
+                status: true,
+                type: "success",
+                message: 'Player game token has been created'  //Will do some testing in future
+            })
+        }
+    })
+
+    const newBattleEvent = contract.filters.NewBattle();
     AddNewEvent(newBattleEvent, provider, ({ args }) => {
         console.log("new battle started", args, walletAddress);
         if (walletAddress.toLowerCase() === args.player1.toLowerCase() || walletAddress.toLowerCase() === args.player2.toLowerCase()) {
@@ -51,15 +64,15 @@ export const createEventListeners = ({ navigate, contract, provider, walletAddre
         setUpdateGameData((previousUpdateGameData) => previousUpdateGameData + 1);
     });
 
-    const BattleMoveEventFilter = contract.filters.BattleMove();
 
+    const BattleMoveEventFilter = contract.filters.BattleMove();
     AddNewEvent(BattleMoveEventFilter, provider, ({ args }) => {
         console.log('Battle has begun', args);
     });
 
 
-    const RoundEndedEventFilter = contract.filters.RoundEnded();
 
+    const RoundEndedEventFilter = contract.filters.RoundEnded();
     AddNewEvent(RoundEndedEventFilter, provider, ({ args }) => {
         console.log('Round End!', args, walletAddress);
 
@@ -75,8 +88,8 @@ export const createEventListeners = ({ navigate, contract, provider, walletAddre
         setUpdateGameData((previousUpdateGameData) => previousUpdateGameData + 1);
     });
 
-    const battleEndedEventFilter = contract.filters.BattleEnded();
 
+    const battleEndedEventFilter = contract.filters.BattleEnded();
     AddNewEvent(battleEndedEventFilter, provider, ({ args }) => {
         console.log('Battle Ended', args, walletAddress)
 
