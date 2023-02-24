@@ -1,6 +1,6 @@
 # A Blockchain Card Game
 
-/assets/images/
+
 
 ### Big Thanks to [JS Mastery](https://github.com/adrianhajdin). 
 
